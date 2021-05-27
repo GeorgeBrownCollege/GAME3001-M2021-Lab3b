@@ -29,7 +29,8 @@ public:
 	void setAccelerationRate(float rate);
 
 	// public member functions
-	void LookWhereIamGoing();
+	void Seek();
+	void LookWhereIamGoing(glm::vec2 target_direction);
 
 private:
 	// private movement variables

@@ -79,16 +79,8 @@ void StarShip::setDesiredVelocity(const glm::vec2 target_position)
 	//std::cout << "Desired Velocity: (" << m_desiredVelocity.x << ", " << m_desiredVelocity.y << ")" << std::endl;
 }
 
-void StarShip::LookWhereIamGoing()
+void StarShip::LookWhereIamGoing(glm::vec2 target_direction)
 {
-	// compute the target direction and magnitude
-	auto target_direction = getTargetPosition() - getTransform()->position;
-
-	// normalize the target direction
-	target_direction = Util::normalize(target_direction);
-	
-	//std::cout << "Target Direction: (" << target_direction.x << ", " << target_direction.y << ")" << std::endl;
-
 	const auto target_rotation = Util::signedAngle(getCurrentDirection(), target_direction);
 
 	const auto turn_sensitivity = 5.0f;
@@ -106,9 +98,26 @@ void StarShip::LookWhereIamGoing()
 	}
 }
 
+void StarShip::Seek()
+{
+	// compute the target direction and magnitude
+	auto target_direction = getTargetPosition() - getTransform()->position;
+
+	// normalize the target direction
+	target_direction = Util::normalize(target_direction);
+	
+	//std::cout << "Target Direction: (" << target_direction.x << ", " << target_direction.y << ")" << std::endl;
+
+	// seek with LookWhereIamGoing
+	LookWhereIamGoing(target_direction);
+
+	// seek without LookWhereIamGoing
+	//setCurrentDirection(target_direction); 
+}
+
 void StarShip::m_move()
 {
-	LookWhereIamGoing();
+	Seek();
 
 	auto deltaTime = TheGame::Instance().getDeltaTime();
 	
