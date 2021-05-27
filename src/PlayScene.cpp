@@ -36,7 +36,11 @@ void PlayScene::update()
 {
 	updateDisplayList();
 
-	/*moveStarShip();*/
+	if(m_pStarShip->isEnabled())
+	{
+		CollisionManager::AABBCheck(m_pStarShip, m_pObstacle);
+		CollisionManager::AABBCheck(m_pStarShip, m_pTarget);
+	}
 }
 
 void PlayScene::clean()
