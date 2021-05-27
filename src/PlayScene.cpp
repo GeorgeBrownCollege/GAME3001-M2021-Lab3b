@@ -22,21 +22,21 @@ void PlayScene::draw()
 	SDL_SetRenderDrawColor(Renderer::Instance().getRenderer(), 255, 255, 255, 255);
 }
 
-void PlayScene::moveStarShip() const
-{
-	if(m_bToggleSeek)
-	{
-		m_pStarShip->setDesiredVelocity(m_pTarget->getTransform()->position);
-		m_pStarShip->getRigidBody()->velocity = m_pStarShip->getDesiredVelocity();
-		m_pStarShip->getTransform()->position += m_pStarShip->getRigidBody()->velocity;
-	}
-}
+//void PlayScene::moveStarShip() const
+//{
+//	if(m_bToggleSeek)
+//	{
+//		m_pStarShip->setDesiredVelocity(m_pTarget->getTransform()->position);
+//		m_pStarShip->getRigidBody()->velocity = m_pStarShip->getDesiredVelocity();
+//		m_pStarShip->getTransform()->position += m_pStarShip->getRigidBody()->velocity;
+//	}
+//}
 
 void PlayScene::update()
 {
 	updateDisplayList();
 
-	moveStarShip();
+	/*moveStarShip();*/
 }
 
 void PlayScene::clean()
@@ -67,6 +67,7 @@ void PlayScene::start()
 	// Add StarShip to Scene
 	m_pStarShip = new StarShip();
 	m_pStarShip->getTransform()->position = glm::vec2(200.0f, 300.0f);
+	m_pStarShip->setTargetPosition(m_pTarget->getTransform()->position);
 	addChild(m_pStarShip);
 
 	ImGuiWindowFrame::Instance().setGUIFunction(std::bind(&PlayScene::GUI_Function, this));
@@ -95,6 +96,7 @@ void PlayScene::GUI_Function()
 	if(ImGui::SliderFloat2("Target Position", target_position, 0.0f, 800.0f))
 	{
 		m_pTarget->getTransform()->position = glm::vec2(target_position[0], target_position[1]);
+		m_pStarShip->setTargetPosition(m_pTarget->getTransform()->position);
 	}
 	
 	ImGui::End();
